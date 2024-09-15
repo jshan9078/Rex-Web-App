@@ -103,12 +103,14 @@ const MappedinMap: React.FC<MappedinMapProps> = ({ userMessage }) => {
 
         const firstSpace = mapData
           .getByType("space")
-          .find((s) => s.name === "3342");
+          .find((s) => s.name === "Workshop Room 4B 4053");
         // const secondSpace = combinedData.find(
         //   (s) =>
         //     s.name.toLowerCase().trim() === destination.toLowerCase().trim()
         // );
-        const secondSpace = combinedData.find((s) => s.name === "3346");
+        const secondSpace = combinedData.find(
+          (s) => s.name === "Workshop Room 4A 4043"
+        );
         console.log(firstSpace, secondSpace);
 
         if (firstSpace && secondSpace) {
@@ -264,7 +266,7 @@ const startStreaming = async (text: string) => {
 
   try {
     const response = await axios.post(
-      `${baseUrl}/zZkhoCLODaqkWwIhQUIH`,
+      `${baseUrl}/6FoItX0qlf6tQuuU3iNT`,
       requestBody,
       {
         headers,
