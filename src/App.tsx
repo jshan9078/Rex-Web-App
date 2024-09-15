@@ -103,13 +103,13 @@ const MappedinMap: React.FC<MappedinMapProps> = ({ userMessage }) => {
 
         const firstSpace = mapData
           .getByType("space")
-          .find((s) => s.name === "Workshop Room 4B 4053");
+          .find((s) => s.name === "✏️ Judging Room J");
         // const secondSpace = combinedData.find(
         //   (s) =>
         //     s.name.toLowerCase().trim() === destination.toLowerCase().trim()
         // );
         const secondSpace = combinedData.find(
-          (s) => s.name === "Workshop Room 4A 4043"
+          (s) => s.name === "Gender Neutral Washroom 2914"
         );
         console.log(firstSpace, secondSpace);
 
