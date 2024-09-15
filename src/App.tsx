@@ -196,7 +196,7 @@ async function sendToVoiceflowAPI(payload: string) {
     );
     const data = await response.json();
     console.log(data[2].payload.message);
-    // startStreaming(data[2].payload.message);
+    startStreaming(data[2].payload.message);
     return data;
   } catch (err) {
     console.error(err);
@@ -291,7 +291,7 @@ export default function App() {
     const initCall = async () => {
       const initialMessage = await startVoiceFlow();
       console.log(initialMessage);
-      // startStreaming(initialMessage);
+      startStreaming(initialMessage);
     };
     initCall();
   }, []);
