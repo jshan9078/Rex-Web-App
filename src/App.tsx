@@ -11,6 +11,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import axios from "axios";
+import { AiFillAudio, AiOutlineCloseCircle } from "react-icons/ai";
 
 const voiceSettings = {
   stability: 0,
@@ -47,12 +48,18 @@ const VoiceWidget: React.FC<VoiceWidgetProps> = ({ setUserMessage }) => {
   }
 
   return (
-    <div>
-      <div>{transcript}</div>
-      <button onClick={toggleListening}>
-        {isListening ? "Stop Listening" : "Start Listening"}
-      </button>
-    </div>
+    <>
+      <div className="voice-widget">
+        <div className="microphone-icon" onClick={toggleListening}>
+          {isListening ? (
+            <AiOutlineCloseCircle style={{ color: "red" }} />
+          ) : (
+            <AiFillAudio style={{ color: "green" }} />
+          )}
+        </div>
+      </div>
+      {transcript && <div className="transcript">{transcript}</div>}
+    </>
   );
 };
 
@@ -87,22 +94,34 @@ const MappedinMap: React.FC<MappedinMapProps> = ({ userMessage }) => {
       if (mapData && mapView && userMessage) {
         await sendToVoiceflowAPI(userMessage);
         const dest = await fetchLatestDestination();
-        console.log("from fetchDest", dest);
+        let destination = "";
+        if (dest) destination = dest;
+        console.log(destination);
         const firstSpace = mapData
           .getByType("space")
-          .find((s) => s.name === "RBC Oasis Tent");
+          .find((s) => s.name === "Hardware Hacking Hub 1427");
         const secondSpace = mapData
           .getByType("space")
-          .find((s) => s.name === dest);
+          .find(
+            (s) =>
+              s.name.toLowerCase().trim() === destination.toLowerCase().trim()
+          );
+        console.log(firstSpace, secondSpace);
 
         if (firstSpace && secondSpace) {
           const newDirections = mapView.getDirections(firstSpace, secondSpace, {
             accessible: true,
           });
-          setDirections(newDirections);
 
           if (newDirections) {
-            insertMovementData(mapActions(newDirections.instructions));
+            console.log(newDirections.instructions);
+            setDirections(newDirections);
+            const transformedDirections = mapActions(
+              newDirections.instructions
+            );
+            console.log(transformedDirections);
+
+            insertMovementData(transformedDirections);
           }
         }
       }
@@ -186,37 +205,45 @@ async function sendToVoiceflowAPI(payload: string) {
 }
 
 function mapActions(data: TDirectionInstruction[]) {
-  return data.slice(1, -1).flatMap((item) => {
+  return data.flatMap((item) => {
     const actionType = item.action.type;
-    const distance = Math.round(item.distance); // Round distance to nearest whole number
+    const distance = Math.round(item.distance).toString(); // Round distance to nearest whole number
 
     if (actionType === "Turn") {
-      const direction = item.action.bearing?.toLowerCase();
+      let direction = item.action.bearing?.toLowerCase();
+      if (direction === "slightright") {
+        direction = "right";
+      } else if (direction === "slightleft") {
+        direction = "left";
+      }
       return [
-        [direction, 0], // Add turn instruction with distance 0
-        ["straight", distance], // After turn, go straight for the calculated distance
+        `straight,${distance}`, // Approach point of turn for the calculated distance
+        `${direction},0`, // Add turn instruction with distance 0
       ];
     } else if (actionType === "TakeConnection") {
-      return [["take elevator", 0]]; // Return an array with elevator action and 0 distance
+      return [`take elevator,0`]; // Return a string with elevator action and 0 distance
     } else if (actionType === "ExitConnection") {
-      return [["exit elevator", 0]]; // Return an array with exit action and 0 distance
+      return [`exit elevator,0`]; // Return a string with exit action and 0 distance
+    } else if (actionType === "Arrival") {
+      return [`straight,${distance}`];
+    } else if (actionType === "Departure") {
+      return [`straight,${distance}`];
     } else {
-      return [["straight", distance]]; // Default action is to go straight for a distance
+      return [`straight,${distance}`]; // Default action is to go straight for a distance
     }
   });
 }
 
-async function insertMovementData(movements: any) {
-  for (const [action, distance] of movements) {
-    const { data, error } = await supabase
-      .from("movement")
-      .insert({ action, distance });
+async function insertMovementData(instructions: any) {
+  console.log(instructions);
+  const { data, error } = await supabase
+    .from("instructions")
+    .insert({ instructions: instructions });
 
-    if (error) {
-      console.error("Error inserting data:", error);
-    } else {
-      console.log("Data inserted successfully:", data);
-    }
+  if (error) {
+    console.error("Error inserting data:", error);
+  } else {
+    console.log("Data inserted successfully:", data);
   }
 }
 
@@ -264,7 +291,7 @@ export default function App() {
     const initCall = async () => {
       const initialMessage = await startVoiceFlow();
       console.log(initialMessage);
-      startStreaming(initialMessage);
+      // startStreaming(initialMessage);
     };
     initCall();
   }, []);

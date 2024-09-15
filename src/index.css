@@ -66,3 +66,40 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.voice-widget {
+  position: fixed;
+  bottom: 150px; /* Distance from the top of the screen */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; /* Ensures it's above other elements */
+}
+
+.microphone-icon {
+  font-size: 3rem;
+  color: #ff5722; /* Default color */
+  background-color: white;
+  border-radius: 25%;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.microphone-icon:hover {
+  color: #ff8a65; /* Color when hovering */
+}
+
+.microphone-icon.active {
+  color: #d32f2f; /* Color when active */
+}
+
+.transcript {
+  margin-bottom: 10px; /* Space between the microphone icon and transcript */
+  font-size: 1rem;
+  color: #333; /* Color for the tr  anscript text */
+  text-align: center; /* Center-align the text */
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+  padding: 10px;
+  border-radius: 8px;
+}

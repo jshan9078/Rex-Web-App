@@ -40,3 +40,61 @@
 .read-the-docs {
   color: #888;
 }
+
+/* styles.css */
+
+.voice-widget {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; /* Ensure it's above other elements */
+}
+
+.microphone-icon {
+  font-size: 3rem;
+  color: #ff5722; /* Default color */
+  background-color: white;
+  border-radius: 50%;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.microphone-icon:hover {
+  color: #ff8a65; /* Color when hovering */
+}
+
+.microphone-icon.active {
+  color: #d32f2f; /* Color when active */
+}
+
+/* styles.css */
+
+.voice-widget {
+  position: fixed;
+  top: 20px; /* Distance from the top of the screen */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; /* Ensures it's above other elements */
+}
+
+.microphone-icon {
+  font-size: 3rem;
+  color: #ff5722; /* Default color */
+  background-color: white;
+  border-radius: 50%;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.microphone-icon:hover {
+  color: #ff8a65; /* Color when hovering */
+}
+
+.microphone-icon.active {
+  color: #d32f2f; /* Color when active */
+}
