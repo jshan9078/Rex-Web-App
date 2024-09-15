@@ -1,50 +1,9 @@
-# React + TypeScript + Vite
+# Mobile-Friendly Application For Rex
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+We made extensive use of **VoiceFlow** and **Mappedin**. This provided a significant challenge since these services could not efficiently be run on a Raspberry Pi, so we created a mobile-friendly web application that takes care of human-computer interaction (text to speech, speech to text) as well as making API requests.
 
-Currently, two official plugins are available:
+We used a custom knowledge base on VoiceFlow to customize the agent to be very specific to the different rooms in E7 and point of interests at Hack the North. We used VoiceFlow's Supabase integration to log a request in the database to begin a trip in the database (that the Raspberry Pi picks up on). Through the app, we made calls to VoiceFlow's API to progress the user's conversation with the agent.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+For Mappedin, we rendered the map on a React Typescript application and made use of the Wayfinding endpoint to retrieve thorough directions. Not only are these directions displayed on the app, but they are sent to the Supabase database which the Raspberry Pi listens to for entries to trigger certain movements.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Supabase was used to connect the Raspberry Pi, VoiceFlow Agent, and Mappedin wayfinding. We chose Supabase due to its realtime subscription abilities and also its compatibility with all three ends of Rex.
