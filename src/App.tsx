@@ -103,11 +103,12 @@ const MappedinMap: React.FC<MappedinMapProps> = ({ userMessage }) => {
 
         const firstSpace = mapData
           .getByType("space")
-          .find((s) => s.name === "Hardware Hacking Hub 1427");
-        const secondSpace = combinedData.find(
-          (s) =>
-            s.name.toLowerCase().trim() === destination.toLowerCase().trim()
-        );
+          .find((s) => s.name === "3342");
+        // const secondSpace = combinedData.find(
+        //   (s) =>
+        //     s.name.toLowerCase().trim() === destination.toLowerCase().trim()
+        // );
+        const secondSpace = combinedData.find((s) => s.name === "3346");
         console.log(firstSpace, secondSpace);
 
         if (firstSpace && secondSpace) {
@@ -209,7 +210,7 @@ async function sendToVoiceflowAPI(payload: string) {
 function mapActions(data: TDirectionInstruction[]) {
   return data.flatMap((item) => {
     const actionType = item.action.type;
-    const distance = Math.round(item.distance).toString(); // Round distance to nearest whole number
+    const distance = item.distance.toString(); // Round distance to nearest whole number
 
     if (actionType === "Turn") {
       let direction = item.action.bearing?.toLowerCase();
