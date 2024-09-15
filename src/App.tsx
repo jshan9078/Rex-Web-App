@@ -102,7 +102,7 @@ const MappedinMap: React.FC<MappedinMapProps> = ({ userMessage }) => {
           setDirections(newDirections);
 
           if (newDirections) {
-            // insertMovementData(mapActions(newDirections.instructions));
+            insertMovementData(mapActions(newDirections.instructions));
           }
         }
       }
@@ -116,7 +116,7 @@ const MappedinMap: React.FC<MappedinMapProps> = ({ userMessage }) => {
   return <Navigation directions={directions} />;
 };
 
-async function startVoiceFlow(userId: string = "userID") {
+async function startVoiceFlow() {
   const options = {
     method: "POST",
     headers: {
@@ -150,7 +150,7 @@ async function startVoiceFlow(userId: string = "userID") {
   }
 }
 
-async function sendToVoiceflowAPI(payload: string, userId: string = "userID") {
+async function sendToVoiceflowAPI(payload: string) {
   const options = {
     method: "POST",
     headers: {
@@ -172,7 +172,7 @@ async function sendToVoiceflowAPI(payload: string, userId: string = "userID") {
 
   try {
     const response = await fetch(
-      `https://general-runtime.voiceflow.com/state/user/${userId}/interact?logs=off`,
+      `https://general-runtime.voiceflow.com/state/user/userID/interact?logs=off`,
       options
     );
     const data = await response.json();
