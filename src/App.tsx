@@ -97,15 +97,17 @@ const MappedinMap: React.FC<MappedinMapProps> = ({ userMessage }) => {
         let destination = "";
         if (dest) destination = dest;
         console.log(destination);
+        const pointsOfInterest = mapData.getByType("point-of-interest");
+        const spaces = mapData.getByType("space");
+        const combinedData = [...pointsOfInterest, ...spaces];
+
         const firstSpace = mapData
           .getByType("space")
           .find((s) => s.name === "Hardware Hacking Hub 1427");
-        const secondSpace = mapData
-          .getByType("space")
-          .find(
-            (s) =>
-              s.name.toLowerCase().trim() === destination.toLowerCase().trim()
-          );
+        const secondSpace = combinedData.find(
+          (s) =>
+            s.name.toLowerCase().trim() === destination.toLowerCase().trim()
+        );
         console.log(firstSpace, secondSpace);
 
         if (firstSpace && secondSpace) {
